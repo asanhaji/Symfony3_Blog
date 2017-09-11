@@ -1,0 +1,24 @@
+platypus_newpost:
+    path:     /post/new
+    defaults: { _controller: PlatypusBundle:Post:new }
+    
+platypus_postlist:
+    path:     /post/list
+    defaults: { _controller: PlatypusBundle:Post:list }
+platypus_postdelete:
+    path:     /post/{id}/delete
+    defaults: { _controller: PlatypusBundle:Post:postDelete }
+    requirements: 
+        id: \d*
+
+platypus_postshow:
+    path:     /post/{id}/show
+    defaults: { _controller: PlatypusBundle:Post:show }
+    requirements: 
+        id: \d*
+
+platypus_postedit:
+    path:     /post/{id}/edit
+    defaults: { _controller: PlatypusBundle:Post:postEdit }
+    requirements: 
+        id: \d*

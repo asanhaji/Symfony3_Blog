@@ -1,0 +1,38 @@
+{% extends "@PlatypusBundle/Resources/views/Default/layout.html.twig" %}
+
+{% block title %}
+    Posts list
+{% endblock %}
+{% block content %}
+    {% for message in app.flashes('notice') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <div class="list-header">
+        <h1>Posts list</h1>
+        {% if is_granted('ROLE_BLOGGER') %}
+            <a href="{{ path('platypus_newpost') }}" class="btn btn-primary addpost" type="submit" role=button">Create a new post</a>
+        {% endif %}
+    </div>
+    {% for post in posts %}
+        <div class="post col-md-12 card">
+            <div class="card-header">
+                <div class="post-creationdate">
+                    Created at : {{ post.creationDate|date('Y-m-d H:i:s') }}
+                </div>
+                <div class="post-editiondate">
+                    Last modification : {{ post.modificationDate|date('Y-m-d H:i:s') }}
+                </div>
+            </div>
+            <div class="card-block">
+                <h4 class="card-title"><a href="{{ path('platypus_postshow', { 'id': post.id }) }}">{{ post.title }}</a></h4>
+                <p class="card-text">{{ post.content }}</p>
+                <a class="btn-xs btn-info" role=button" href="{{ path('platypus_postshow', { 'id': post.id }) }}">Show</a>
+                {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_BLOGGER') and app.user and post.user and app.user.id == post.user.id) %}
+                    <a class="btn-xs btn-info" href="{{ path('platypus_postedit', { 'id': post.id }) }}" role=button" >Edit</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

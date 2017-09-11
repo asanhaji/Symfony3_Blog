@@ -1,0 +1,28 @@
+{% extends "@PlatypusBundle/Resources/views/Default/layout.html.twig" %}
+{% block content %}
+{% if getParams|length > 0 %}
+    <table class="table">
+    <col width="40%">
+    <col width="60%">
+    {% for key, param in getParams %}
+    {% if loop.first %}
+        <thead>
+            <tr>
+                <th>{{ key }}</th>
+                <th>{{ param }}</th>
+            </tr>
+        </thead>
+    {% else %}
+        <tr class="{{ cycle(['odd', 'even'], loop.index) }}">
+            <td>{{ key }}</td>
+            <td>{{ param }}</td>
+        </tr>
+    {% endif %}
+    {% endfor %}
+    </table>
+{% endif %}
+
+{% if app.environment == 'dev' %}
+    {{ getParams|length }}
+{% endif %}
+{% endblock %}

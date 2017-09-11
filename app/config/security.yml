@@ -1,0 +1,51 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_BLOGGER
+    encoders:
+        PlatypusBundle\Entity\User: bcrypt
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        db_provider:
+            entity:
+                class: PlatypusBundle:User
+                property: username
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            pattern: ^/
+            anonymous: true
+            remember_me:
+                secret: "ThisTokenIsNotSoSecretChangeIt"
+                lifetime: 604800
+                path:     /
+                domain: ~
+                name:      REMEMBERME
+                always_remember_me: true
+                remember_me_parameter: _remember_me
+                
+#            provider:
+#                chain_provider:
+#                    chain:
+#                        providers: [in_memory, db_provider]
+
+            form_login:
+                login_path: /login
+                check_path: /login
+                remember_me: true
+            logout:
+                path: /logout
+                target: /
+                
+    access_control:
+        - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/edit, roles: ROLE_BLOGGER }
+        - { path: ^/user/\d+/edit, roles: ROLE_BLOGGER }
+        - { path: ^/post/\d+/edit, roles: ROLE_BLOGGER }
+    

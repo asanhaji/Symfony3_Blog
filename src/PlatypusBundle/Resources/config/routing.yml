@@ -1,0 +1,76 @@
+error404:
+    path: /error404
+    defaults: { _controller: PlatypusBundle:Default:error404 }
+    
+platypus_homepage:
+    path:     /
+    defaults: { _controller: PlatypusBundle:Default:index }
+
+platypus_index:
+    path:     /index
+    defaults: { _controller: PlatypusBundle:Default:index }
+
+platypus_logout:
+    path:     /logout
+    defaults: { _controller: PlatypusBundle:User:logout }
+
+platypus_register:
+    path:     /register
+    defaults: { _controller: PlatypusBundle:User:register }
+
+platypus_login:
+    path:     /login
+    defaults: { _controller: PlatypusBundle:User:login }
+    
+platypus_delete:
+    path:     /user/delete
+    defaults: { _controller: PlatypusBundle:User:userDelete }
+    
+platypus_useredit:
+    path:     /user/edit
+    defaults: { _controller: PlatypusBundle:User:userEdit }
+
+platypus_usershow:
+    path:     /user/{id}
+    defaults: { _controller: PlatypusBundle:User:show }
+    requirements: 
+        id: \d*
+
+platypus_userlist:
+    path:     /user/list
+    defaults: { _controller: PlatypusBundle:User:userList}
+
+platypus_registered:
+    path:     /register
+    defaults: { _controller: PlatypusBundle:User:registerConfirm }
+
+platypus_adminuseredit:
+    path: /user/{id}/edit
+    defaults: { _controller: PlatypusBundle:UserAdmin:userEdit}
+    requirements: 
+        id: \d*
+
+platypus_adminuserdelete:
+    path:     /user/{id}/delete
+    defaults: { _controller: PlatypusBundle:UserAdmin:userDelete }
+    requirements: 
+        id: \d*
+
+show_greetings:
+    path:     /{type}/show/{id}
+    defaults: 
+        _controller: PlatypusBundle:Checker:show
+        id: null
+    requirements: 
+        id: \d*
+        type: "Platypus|Human|Gecko"
+
+show_params:
+    path:     /checker/showParams
+    defaults:
+        _controller: PlatypusBundle:Checker:showParams
+
+#show_layout:
+#    path:     /checker/layout
+#    defaults:
+#        _controller: PlatypusBundle:Default:layout

@@ -1,0 +1,56 @@
+{% extends "@PlatypusBundle/Resources/views/Default/layout.html.twig" %}
+
+{% block title %}
+    Users list
+{% endblock %}
+{% block content %}
+
+    <div class="list-header">
+        <h1>User list</h1>
+        {% if is_granted('ROLE_ADMIN') %}
+            <button href="{#{ path('user_new') }#}" class="btn btn-primary adduser" type="submit">Add a new user</button>
+        {% endif %}
+    </div>
+    <table class="table table-users table-striped">
+        <thead>
+            <tr>
+                {% if is_granted('ROLE_ADMIN') %}<th>Id</th>{% endif %}
+                <th>Username</th>
+                <th>Email</th>
+                <th>First name</th>
+                <th>Last name</th>
+                {% if is_granted('ROLE_ADMIN') %}<th>Roles</th>{% endif %}
+                <th>Creation date</th>
+                 <th>Actions</th>
+            </tr>
+        </thead>
+        <tr class="separator" />
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    {% if is_granted('ROLE_ADMIN') %}<td><a href="{{ path('platypus_usershow', { 'id': user.id }) }}">{{ user.id }}</a>
+                        </td>{% endif %}
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.firstName }}</td>
+                        <td>{{ user.lastName }}</td>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td>{% if user.roles %}{{ user.roles|join(', ') }}{% endif %}</td>
+                        {% endif %}
+                        <td>{% if user.creationDate %}{{ user.creationDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+
+                        <td> 
+                            <a href="{{ path('platypus_usershow', { 'id': user.id }) }}" class="btn btn-xs">Show</a>
+                            {% if is_granted('ROLE_ADMIN')  or ( is_granted('ROLE_BLOGGER') and app.user and user and app.user.id == user.id)%}
+                                <a href="{{ path('platypus_adminuseredit', { 'id': user.id }) }}" class="btn btn-xs {{(is_granted('ROLE_ADMIN') and app.user.id == user.id)?'disabled' }}">Edit</a>
+                            {% endif %}
+                        </td>
+
+                    </tr>
+                    <tr class="separator" />
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+
+                {% endblock %}

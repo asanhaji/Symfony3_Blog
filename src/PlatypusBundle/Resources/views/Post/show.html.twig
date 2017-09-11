@@ -1,0 +1,51 @@
+{% extends "@PlatypusBundle/Resources/views/Default/layout.html.twig" %}
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+{% block content %}
+    <h1>Post</h1>
+
+    <table class="table table-show-post table-striped">
+        <tbody>
+            {% if is_granted('ROLE_ADMIN') %}
+                <tr>
+                    <th>Id</th>
+                    <td>{{ post.id }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <th>Title</th>
+                <td><p>{{ post.title }}</p></td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td><p>{{ post.content }}</p></td>
+            </tr>
+            <tr>
+                <th>Creation date</th>
+                <td>{% if post.creationDate %}{{ post.creationDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Modification date</th>
+                <td>{% if post.modificationDate %}{{ post.modificationDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            {% if post.user %}
+            <tr>
+                <th>User username</th>
+                <td>{{ post.user.username}}</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    {% if is_granted('ROLE_ADMIN') or (is_granted('ROLE_BLOGGER') and post.user.id == app.user.id) %}
+        <div class="form-group">
+            <button class="btn btn-lg btn-primary btn-block" onclick="location.href = '{{ path('platypus_postedit', { 'id': post.id }) }}';">Edit</button>
+            {{ form_start(delete_form) }}
+            <button class="btn btn-lg btn-primary btn-block btn-danger" type="submit">Delete post</button>
+            {{ form_end(delete_form) }}
+        </div>
+    {% endif %}
+
+    <a href="{{ path('platypus_postlist') }}">Back to the list</a>
+    
+{% endblock %}

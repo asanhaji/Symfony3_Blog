@@ -1,0 +1,23 @@
+platypus_post:
+    resource: "@PlatypusBundle/Controller/PostController.php"
+    type:     annotation
+
+platypus_user:
+    resource: "@PlatypusBundle/Controller/UserController.php"
+    type:     annotation
+
+platypus_post:
+    resource: "@PlatypusBundle/Controller/PostController.php"
+    type:     annotation
+
+platypus:
+    resource: "@PlatypusBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+posts:
+    resource: '@PlatypusBundle/Resources/config/posts.yml'
+    prefix:   /
+

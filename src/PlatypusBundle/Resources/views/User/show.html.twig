@@ -1,0 +1,80 @@
+{% extends "@PlatypusBundle/Resources/views/Default/layout.html.twig" %}
+
+{% block title %}
+    {{ user.username }}
+{% endblock %}
+{% block content %}
+    <div class="col-lg-6">
+        <h2>{{ user.username}}</h2>
+        <table class="table table-show-user table-striped">
+            <tbody>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ user.id }}</td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>Username</th>
+                    <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <th>First name</th>
+                    <td>{{ user.firstName }}</td>
+                </tr>
+                <tr>
+                    <th>Last name</th>
+                    <td>{{ user.lastName }}</td>
+                </tr>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <tr>
+                        <th>Roles</th>
+                        <td>{% if user.roles %}{{ user.roles|join(', ') }}{% endif %}</td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>Creation date</th>
+                    <td>{% if user.creationDate %}{{ user.creationDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="form-group">
+                <button class="btn btn-lg btn-primary btn-block {{(app.user.id == user.id)?'disabled' }}" onclick="location.href = '{{ (app.user.id != user.id)? path('platypus_adminuseredit', { 'id': user.id }) }}';">Edit account</button>
+                {{ (app.user.id != user.id)? form_start(delete_form):'' }}
+                <button class="btn btn-lg btn-primary btn-block btn-danger {{(app.user.id == user.id)?'disabled' }}" type="submit">Delete account</button>
+                {{ (app.user.id != user.id)? form_end(delete_form):'' }}
+            </div>
+        {% endif %}
+
+        <a href="{{ path('platypus_userlist') }}">Back to the list</a>
+
+    </div>
+    <div class="col-lg-6 user-post-list">
+        {% for post in user.getPosts() %}
+            <div class="post col-md-12 card">
+                <div class="card-header">
+                    <div class="post-creationdate">
+                    Created at : {{ post.creationDate|date('Y-m-d H:i:s') }}
+                    </div>
+                    <div class="post-editiondate">
+                    Last modification : {{ post.modificationDate|date('Y-m-d H:i:s') }}
+                    </div>
+                </div>
+                <div class="card-block">
+                    <h4 class="card-title"><a href="{{ path('platypus_postshow', { 'id': post.id }) }}">{{ post.title }}</a></h4>
+                    <p class="card-text">{{ post.content }}</p>
+                    <a class="btn-xs btn-info" role=button" href="{{ path('platypus_postshow', { 'id': post.id }) }}">Show</a>
+                    {% if (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_BLOGGER') and app.user and post.user and app.user.id == post.user.id) %}
+                        <a class=" btn-xs btn-info" href="{{ path('platypus_postedit', { 'id': post.id }) }}" role=button" >Edit</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

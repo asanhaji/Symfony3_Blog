@@ -1,0 +1,7 @@
+{% if (type == 'Platypus') %}
+    I salute you, Ô great master.
+{% elseif id is defined and (type == 'Human' or type == 'Gecko') %}
+    Greetings, great {{type}} {{id}}
+{% elseif id is not defined and (type == 'Human' or type == 'Gecko') %}
+    Greetings, great {{type}} 
+{% endif %}
